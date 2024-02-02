@@ -8,9 +8,25 @@ const Home = () => {
 	const [visible, setVisible] = useState("none");
 	const [hoverIndex, setHoverIndex] = useState(null);
 
+	// FETCH
+	function createUser() {		
+		fetch('https://playground.4geeks.com/apis/fake/todos/user/smontoro17', {
+			method: "POST",
+			body: JSON.stringify([]),
+			headers: {
+				"Content-Type": "application/json",
+			}
+			})
+			.then(resp => resp.json()
+			)
+			.then(data => {console.log("Nuevo usuario creado"), data})
+			.catch(error => {
+				console.log(error);
+			});
+	}
 
 	function getTasks() {
-		fetch('https://playground.4geeks.com/apis/fake/todos/user/smontoro15', {
+		fetch('https://playground.4geeks.com/apis/fake/todos/user/smontoro17', {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json"
@@ -27,7 +43,7 @@ const Home = () => {
 	}
 
 	function updateTasks(dinamicList) {
-		fetch('https://playground.4geeks.com/apis/fake/todos/user/smontoro15', {
+		fetch('https://playground.4geeks.com/apis/fake/todos/user/smontoro17', {
 			method: "PUT",
 			body: JSON.stringify(dinamicList),
 			headers: {
@@ -42,9 +58,9 @@ const Home = () => {
 			});
 	}
 
+	// EVENTOS Y ACTUALIZACIÓN DEL ARRAY DE TAREAS (AÑADIR/ELIMINAR TAREA)
 	function taskInput(event) {
 		setTask({label: event.target.value, done: false});
-		console.log(task);
 	}
 
 	function addItem(event) {
@@ -54,7 +70,7 @@ const Home = () => {
 
 			event.target.value = "";
 
-			updateTasks(dinmicList);
+			updateTasks(dinamicList);
 			
 			getTasks();
 		}		
@@ -67,12 +83,13 @@ const Home = () => {
 		updateTasks(modifiedTaskList);
 	}
 
-
+	// FUNCIONES DE LA PRIEMRA CARGA DE LA PÁGINA
 	useEffect(() => {
+		createUser();
 		getTasks();
 	},[]);
 	
-
+	// FUNCIONES DE ESTILOS
 	function showButton(index) {
 		setVisible("block");
 		setHoverIndex(index);
